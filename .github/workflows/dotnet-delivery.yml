@@ -1,0 +1,46 @@
+name: Reusable .NET build delivery
+on:
+  workflow_call:
+    inputs:
+      project:
+        description: Solution or test project path
+        required: true
+        type: string
+      publish-project:
+        description: Deployable application project path
+        required: true
+        type: string
+      dotnet-version:
+        description: Supported SDK version matching the application
+        required: true
+        type: string
+permissions:
+  contents: read
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      PROJECT: ${{ inputs.project }}
+      PUBLISH_PROJECT: ${{ inputs.publish-project }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@0f4a354dd5547a28c70b7853dbd95d5b67886e73 # v6.1.0
+        with:
+          dotnet-version: ${{ inputs.dotnet-version }}
+      - name: Restore and validate
+        run: |
+          dotnet restore "$PROJECT"
+          dotnet build "$PROJECT" --configuration Release --no-restore
+          dotnet test "$PROJECT" --configuration Release --no-build
+      - name: Publish application
+        run: dotnet publish "$PUBLISH_PROJECT" --configuration Release --output "$RUNNER_TEMP/delivery"
+      - name: Upload immutable delivery artifact
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: application-${{ github.sha }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/delivery/
+          if-no-files-found: error
+          retention-days: 7
