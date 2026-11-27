@@ -1,0 +1,1 @@
+Console.WriteLine("WHITEBEARD_WORKFLOW_SMOKE_OK");
