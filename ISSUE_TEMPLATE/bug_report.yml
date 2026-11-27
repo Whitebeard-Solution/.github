@@ -1,0 +1,26 @@
+name: Bug report
+description: Report a reproducible defect without sensitive data.
+title: "[Bug]: "
+body:
+  - type: markdown
+    attributes:
+      value: Do not include secrets or vulnerability details. See SECURITY.md for private reporting.
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Expected and actual behavior
+      description: Include the affected version and environment.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction steps
+      description: Provide a minimal sanitized example.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Validation and impact
+      description: Sanitized logs, screenshots, scope, and workarounds if available.

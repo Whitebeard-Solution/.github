@@ -1,0 +1,22 @@
+name: Feature request
+description: Describe a user need and measurable acceptance.
+title: "[Feature]: "
+body:
+  - type: textarea
+    id: need
+    attributes:
+      label: User problem
+      description: Who needs this and what outcome is currently blocked?
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance scenarios
+      description: Include relevant permission, failure, and compatibility cases.
+    validations:
+      required: true
+  - type: textarea
+    id: options
+    attributes:
+      label: Options and constraints
